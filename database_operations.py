@@ -1,66 +1,72 @@
-# database_operations.py
-
 import sqlite3
 
-
-def connect_to_database(db_name="students.db"):
+def connect_to_database(db_name="school.db"):
     return sqlite3.connect(db_name)
 
 
-def create_table(cursor):
+def create_tables(cursor):
     cursor.execute(
         """CREATE TABLE IF NOT EXISTS students
-                      (id INTEGER PRIMARY KEY, name TEXT, grade TEXT)"""
+           (id INTEGER PRIMARY KEY, name TEXT, grade TEXT)"""
+    )
+    cursor.execute(
+        """CREATE TABLE IF NOT EXISTS courses
+           (course_id INTEGER PRIMARY KEY, student_id INTEGER,
+            course_name TEXT, score INTEGER,
+            FOREIGN KEY (student_id) REFERENCES students (id))"""
     )
 
 
 def insert_student(cursor, name, grade):
     cursor.execute("INSERT INTO students (name, grade) VALUES (?, ?)", (name, grade))
+    return cursor.lastrowid  # Returning the id of the inserted student
 
 
-def read_student(cursor, name):
-    cursor.execute("SELECT * FROM students WHERE name=?", (name,))
+def insert_course(cursor, student_id, course_name, score):
+    cursor.execute(
+        "INSERT INTO courses (student_id, course_name, score) VALUES (?, ?, ?)",
+        (student_id, course_name, score),
+    )
+
+
+def complex_query(cursor):
+    cursor.execute(
+        """SELECT s.name, s.grade, COUNT(c.course_id) AS num_courses, COALESCE(AVG(c.score), 0) AS avg_score
+           FROM students s
+           LEFT JOIN courses c ON s.id = c.student_id
+           GROUP BY s.id, s.name, s.grade
+           ORDER BY s.name"""
+    )
     return cursor.fetchall()
 
-
-def update_student_grade(cursor, name, grade):
-    cursor.execute("UPDATE students SET grade=? WHERE name=?", (grade, name))
-
-
-def delete_student(cursor, name):
-    cursor.execute("DELETE FROM students WHERE name=?", (name,))
-
-
-def count_students_by_grade(cursor, grade):
-    cursor.execute("SELECT COUNT(*) FROM students WHERE grade=?", (grade,))
-    return cursor.fetchone()
-
-
-def fetch_students_ordered_by_name(cursor):
-    cursor.execute("SELECT * FROM students ORDER BY name")
-    return cursor.fetchall()
 
 
 def main():
     conn = connect_to_database()
     cursor = conn.cursor()
 
-    create_table(cursor)
+    create_tables(cursor)
 
-    insert_student(cursor, "Alice", "A")
-    print(read_student(cursor, "Alice"))
-
-    update_student_grade(cursor, "Alice", "B")
-    print(read_student(cursor, "Alice"))
-
-    print(count_students_by_grade(cursor, "A"))
-
-    print(fetch_students_ordered_by_name(cursor))
-
-    delete_student(cursor, "Alice")
-
+    alice_id = insert_student(cursor, "Alice", "A")
+    insert_course(cursor, alice_id, "Math", 90)
+    insert_course(cursor, alice_id, "Physics", 85)
+    
+    bob_id = insert_student(cursor, "Bob", "B")
+    insert_course(cursor, bob_id, "Math", 88)
+    
+    charlie_id = insert_student(cursor, "Charlie", "C")
+    insert_course(cursor, charlie_id, "History", 92)
+    insert_course(cursor, charlie_id, "Biology", 78)
+    
     conn.commit()
+    
+    results = complex_query(cursor)
+    print("Name | Grade | Number of Courses | Average Score")
+    for row in results:
+        print(f"{row[0]} | {row[1]} | {row[2]} | {row[3]:.2f}")
+    
     conn.close()
+
 
 
 if __name__ == "__main__":
