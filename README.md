@@ -7,7 +7,7 @@ This repository sets up an environment on CodeSpaces and uses GitHub Actions to 
 To set up the project, simply run make all or run make install and make test.
 
 ## Interact with SQLite database
-A Python script designed to manage student and course data through interaction with an SQLite database, performing various SQL operations including creating tables, inserting, updating, deleting data, and executing a complex SQL query.
+A Python script designed to manage student and course data through interaction with an SQLite database, performing various SQL operations including creating tables, inserting data, and executing a complex SQL query.
 
 ## How to Run
 1. Ensure Python3 is installed.
@@ -64,5 +64,5 @@ The query will output a sorted list of students, each with their grade, total nu
 - **requirements.txt** is to specify the dependencies (libraries and packages) required to run the project.
 - **test_main.py** is a test file for main.py that can successfully run in IDEs.
 - **main.py** is a Python file that contains the main function.
-- **database_operations.py** is the main Python script that contains functions to connect to the database, performing various SQL operations including creating tables, inserting, updating, deleting data, and executing a complex SQL query.
+- **database_operations.py** is the main Python script that contains functions to connect to the database, performing various SQL operations including creating tables, inserting data, and executing a complex SQL query.
 - **school.db** is a SQLite database file. It will be automatically generated after the first script execution and will store the students table along with its records.
