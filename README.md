@@ -41,9 +41,18 @@ The script executes a complex SQL query to extract data about the students and t
     GROUP BY s.id, s.name, s.grade
     ORDER BY s.name
 
-4. Viewing Results
-    Run `python3 database_operations.py` to see the results on the terminal:
-    ![Alt text](results.png) 
+### Explanation
+- **FROM students s**: Specifies that the student table is the main table.
+- **LEFT JOIN courses c ON s.id = c.student_id**: Joins the student table with the courses table using a left join on the student ID. A left join is used to ensure that students without courses are still included in the results.
+- **GROUP BY s.id, s.name, s.grade**: Groups the results by student, which aggregates course data per student.
+- **COUNT(c.course_id) AS num_courses**: Counts the number of courses per student by counting course IDs in the aggregated data.
+- **COALESCE(AVG(c.score), 0) AS avg_score**: Calculates the average score per student and replaces NULL with 0 if a student is not enrolled in any courses.
+- **ORDER BY s.name**: Orders the results by student name to make the output user-friendly and orderly.
+
+### Expected Results
+The query will output a sorted list of students, each with their grade, total number of courses enrolled, and their average score across all courses. Even students not enrolled in any courses will be displayed, with 0 as both the number of courses and average score
+
+![Alt text](results.png) 
 
 
 ## Project Structure
@@ -55,5 +64,5 @@ The script executes a complex SQL query to extract data about the students and t
 - **requirements.txt** is to specify the dependencies (libraries and packages) required to run the project.
 - **test_main.py** is a test file for main.py that can successfully run in IDEs.
 - **main.py** is a Python file that contains the main function.
-- **database_operations.py** is the main Python script that contains functions to connect to the database, perform CRUD operations, and execute custom SQL queries.
-- **students.db** is a SQLite database file. It will be automatically generated after the first script execution and will store the students table along with its records.
+- **database_operations.py** is the main Python script that contains functions to connect to the database, performing various SQL operations including creating tables, inserting, updating, deleting data, and executing a complex SQL query.
+- **school.db** is a SQLite database file. It will be automatically generated after the first script execution and will store the students table along with its records.
