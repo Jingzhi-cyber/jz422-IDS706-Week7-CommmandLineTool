@@ -1,5 +1,5 @@
-# IDS706-Week6-miniProj-Complex-SQL
-[![CI](https://github.com/Jingzhi-cyber/jz422-IDS706-Week6-Complex-SQL/actions/workflows/cicd.yml/badge.svg)](https://github.com/Jingzhi-cyber/jz422-IDS706-Week6-Complex-SQL/actions/workflows/cicd.yml)
+# IDS706-Week7-miniProj-Command-Line-Tool
+[![CI](https://github.com/Jingzhi-cyber/jz422-IDS706-Week7-CommandLineTool/actions/workflows/cicd.yml/badge.svg)](https://github.com/Jingzhi-cyber/jz422-IDS706-Week7-CommandLineTool/actions/workflows/cicd.yml)
 
 This repository sets up an environment on CodeSpaces and uses GitHub Actions to run a Makefile for the following commands: make install, make test, make format, and make lint.
 
