@@ -57,12 +57,12 @@ def complex_query(cursor):
 def main():
     parser = argparse.ArgumentParser(description="Manage students and courses in a database.")
     
-    parser.add_argument('--add', metavar='NAME', help='Add a new student by name')
-    parser.add_argument('--list', action='store_true', help='List all students')
-    parser.add_argument('--update', nargs=2, metavar=('ID', 'NEW_NAME'), help="Update a student's name by their ID")
+    parser.add_argument('--add-student', metavar='NAME', help='Add a new student by name')
+    parser.add_argument('--list-students', action='store_true', help='List all students')
+    parser.add_argument('--update', nargs=2, metavar=('ID', 'NEW_NAME'), help="Update a student's name by ID")
     parser.add_argument('--delete', metavar='ID', help='Delete a student by their ID')
     parser.add_argument('--find', metavar='NAME', help='Find students by name')
-    parser.add_argument('--add-course', nargs=3, metavar=('STUDENT_NAME', 'COURSE_NAME', 'SCORE'), help='Add a course for a student')
+    parser.add_argument('--add-course', nargs=3, metavar=('STUDENT_ID', 'COURSE_NAME', 'SCORE'), help='Add a course for a student by their ID')
     parser.add_argument('--list-courses', action='store_true', help='List all courses for all students')
     parser.add_argument('--complex-query', action='store_true', help='Run the complex query and display results')
 
@@ -73,10 +73,10 @@ def main():
 
     create_tables(cursor)
 
-    if args.add:
-        insert_student(cursor, args.add, "Unknown Grade")  # Assuming grade is unknown for simplicity
-        print(f"Added student with name: {args.add}")
-    elif args.list:
+    if args.add_student:
+        insert_student(cursor, args.add_student, "Unknown Grade")  # Assuming grade is unknown for simplicity
+        print(f"Added student with name: {args.add_student}")
+    elif args.list_students:
         students = list_students(cursor)
         for student in students:
             print(student)
@@ -91,7 +91,7 @@ def main():
         for student in students:
             print(student)
     elif args.add_course:
-        insert_course(cursor, args.add_course[0], args.add_course[1], args.add_course[2])
+        insert_course(cursor, int(args.add_course[0]), args.add_course[1], int(args.add_course[2]))
         print(f"Added course {args.add_course[1]} for student ID {args.add_course[0]} with score {args.add_course[2]}")
     elif args.list_courses:
         courses = list_courses(cursor)
