@@ -3,6 +3,8 @@
 
 This repository sets up an environment on CodeSpaces and uses GitHub Actions to run a Makefile for the following commands: make install, make test, make format, and make lint.
 
+Packaging Python scripts into command-line tools can significantly enhance user experience and distribution. With the power of setuptools and careful structuring, you can turn even complex applications into user-friendly command-line tools.
+
 ## Getting Started
 To set up the project, simply run make all or run make install and make test.
 
